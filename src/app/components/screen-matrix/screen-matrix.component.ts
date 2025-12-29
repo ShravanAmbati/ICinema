@@ -124,7 +124,7 @@ export class ScreenMatrixComponent implements OnInit {
           showId: this.showId,
           selectedSeats: this.selectedSeats
         });
-        this.router.navigate(['/booking']); // To booking summary/confirmation component
+        this.router.navigate(['/summary']); // To booking summary component
       },
       error: (err) => {
         console.error(err);
