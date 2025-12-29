@@ -1,0 +1,27 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: gateway-service
+  cloud:
+    consul:
+      host: localhost
+      port: 8500
+      discovery:
+        enabled: true
+    gateway:
+      routes:
+        - id: movies-service
+          uri: lb://movies-service
+          predicates:
+            - Path=/movies/**
+        - id: theatre-service
+          uri: lb://theatre-service
+          predicates:
+            - Path=/theatres/**, /shows/**
+        # Add other services as needed
+      discovery:
+        locator:
+          enabled: true
+          lower-case-service-id: true

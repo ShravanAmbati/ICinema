@@ -1,0 +1,67 @@
+<div class="container py-5 mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            <div class="glass-card p-4">
+                <h3 class="mb-4 text-center pb-3 text-white" style="border-bottom: 1px solid rgba(255,255,255,0.1)">
+                    Booking Summary</h3>
+
+                <div class="d-flex gap-3 mb-4" *ngIf="movie">
+                    <!-- Placeholder image -->
+                    <img src="https://placehold.co/100x150?text={{movie.name}}"
+                        style="width: 100px; height: 150px; object-fit: cover;" class="rounded shadow">
+                    <div>
+                        <h4 class="mb-1 text-white">{{movie.name}}</h4>
+                        <div class="text-muted small mb-2">{{movie.censorRating}} &bull; {{movie.language}} &bull;
+                            {{movie.genre}}</div>
+                        <!-- Theatre info might be missing currently, hiding safely -->
+                        <!-- <div class="text-primary-custom fw-bold">{{theatre?.name}}</div> -->
+                        <!-- <div class="small text-muted mb-1">{{theatre?.location}}</div> -->
+
+                        <!-- Show time -->
+                        <!-- We can get time from route/state if saved, or just show ID/generic text -->
+                    </div>
+                </div>
+
+                <div class="p-3 rounded glass-effect mb-4" *ngIf="bookingResponse">
+                    <div class="d-flex justify-content-between mb-2">
+                        <span class="text-muted small">Seats Selected</span>
+                        <span class="text-white fw-bold">
+                            <!-- Show seat count or IDs if available in bookingData.selectedSeats -->
+                            <span
+                                *ngFor="let s of bookingData.selectedSeats; let last=last">{{s.seatNumber}}{{last?'':',
+                                '}}</span>
+                            <span class="badge bg-secondary ms-2">{{bookingData.selectedSeats.length}} Tickets</span>
+                        </span>
+                    </div>
+
+                    <hr class="border-secondary my-3">
+
+                    <div class="d-flex justify-content-between mb-1">
+                        <span class="text-muted">Subtotal</span>
+                        <span class="text-white">{{ bookingResponse.baseAmount | currency:'INR'}}</span>
+                    </div>
+                    <div class="d-flex justify-content-between mb-1">
+                        <span class="text-muted">Convenience Fee</span>
+                        <span class="text-white">{{bookingResponse.convenienceFee | currency:'INR'}}</span>
+                    </div>
+                    <div class="d-flex justify-content-between mb-1">
+                        <span class="text-muted">GST (18%)</span>
+                        <span class="text-white">{{bookingResponse.gst | currency:'INR'}}</span>
+                    </div>
+
+                    <hr class="border-white opacity-25 my-3">
+
+                    <div class="d-flex justify-content-between align-items-center">
+                        <span class="fs-5 fw-bold text-white">Total Amount</span>
+                        <span class="fs-3 fw-bold text-accent">{{bookingResponse.totalAmount | currency:'INR'}}</span>
+                    </div>
+                </div>
+
+                <button class="btn btn-primary w-100 py-3 mt-2 fw-bold shadow-lg rounded-pill"
+                    (click)="proceedToPayment()">
+                    Proceed to Pay <i class="bi bi-credit-card-fill ms-2"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

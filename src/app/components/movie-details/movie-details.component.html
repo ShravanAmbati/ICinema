@@ -1,0 +1,55 @@
+<div class="movie-page position-relative" *ngIf="movie">
+    <!-- Hero Backdrop -->
+    <!-- Placeholder for image -->
+    <div class="hero-backdrop" style="background-image: url('https://placehold.co/1200x600?text={{movie.name}}')">
+        <div class="hero-overlay"></div>
+    </div>
+
+    <div class="container position-relative z-1 py-5 mt-5">
+        <div class="row align-items-start">
+            <div class="col-md-4 mb-4 mb-md-0">
+                <div class="poster-container">
+                    <img src="https://placehold.co/300x450?text={{movie.name}}" [alt]="movie.name"
+                        class="img-fluid rounded-4 shadow-lg" style="border: 2px solid rgba(255,255,255,0.1);">
+                </div>
+            </div>
+            <div class="col-md-8 text-white ps-md-5">
+                <h1 class="display-3 fw-bold mb-2">{{movie.name}}</h1>
+                <div class="d-flex align-items-center gap-3 mb-4 text-light">
+                    <span class="badge bg-warning text-dark"><i class="bi bi-star-fill"></i> {{movie.rating}}</span>
+                    <span class="badge bg-secondary">{{movie.censorRating}}</span>
+                    <!-- Duration not in DTO -->
+                    <!-- <span><i class="bi bi-clock"></i> {{movie.duration}}</span> -->
+                    <span><i class="bi bi-calendar"></i> {{movie.releaseDate | date}}</span>
+                </div>
+
+                <div class="mb-4">
+                    <span class="badge glass-effect me-2 p-2">{{movie.genre}}</span>
+                    <span class="badge glass-effect p-2">{{movie.language}}</span>
+                </div>
+
+                <h4 class="mb-3">Overview</h4>
+                <p class="lead text-light opacity-75 mb-5">{{movie.description}}</p>
+
+                <button class="btn btn-primary btn-lg rounded-pill px-5 py-3 fw-bold shadow-lg" (click)="bookTicket()">
+                    <i class="bi bi-ticket-perforated-fill me-2"></i> Book My Show
+                </button>
+
+                <div class="mt-5 glass-card p-4" style="max-width: 400px;">
+                    <h5 class="mb-3"><i class="bi bi-star-half text-accent"></i> Add your rating</h5>
+                    <div class="input-group">
+                        <select class="form-select bg-dark text-light border-secondary" [(ngModel)]="userRating">
+                            <option [value]="0">Select Rating</option>
+                            <option [value]="1">1 Star</option>
+                            <option [value]="2">2 Stars</option>
+                            <option [value]="3">3 Stars</option>
+                            <option [value]="4">4 Stars</option>
+                            <option [value]="5">5 Stars</option>
+                        </select>
+                        <button class="btn btn-outline-warning" type="button" (click)="submitRating()">Submit</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

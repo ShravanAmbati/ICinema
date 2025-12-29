@@ -1,0 +1,92 @@
+<div class="home-container">
+    <!-- Sidebar -->
+    <div class="sidebar bg-black glass-effect" [class.closed]="!isSidebarOpen">
+        <div class="p-4">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h4 class="mb-0 text-white"><i class="bi bi-funnel text-primary-custom"></i> Filters</h4>
+                <button class="btn btn-sm btn-outline-secondary d-md-none" (click)="toggleSidebar()"><i
+                        class="bi bi-x-lg"></i></button>
+            </div>
+
+            <div class="mb-4">
+                <label class="form-label text-muted small">Search</label>
+                <input type="text" class="form-control bg-dark text-light border-0" placeholder="Search movies..."
+                    [(ngModel)]="searchQuery" (input)="applyFilters()">
+            </div>
+
+            <div class="mb-4">
+                <label class="form-label text-muted small">Genre</label>
+                <select class="form-select bg-dark text-light border-0" [(ngModel)]="selectedGenre"
+                    (change)="applyFilters()">
+                    <option value="">All Genres</option>
+                    <option *ngFor="let g of genres" [value]="g">{{g}}</option>
+                </select>
+            </div>
+
+            <div class="mb-4">
+                <label class="form-label text-muted small">Language</label>
+                <select class="form-select bg-dark text-light border-0" [(ngModel)]="selectedLanguage"
+                    (change)="applyFilters()">
+                    <option value="">All Languages</option>
+                    <option *ngFor="let l of languages" [value]="l">{{l}}</option>
+                </select>
+            </div>
+
+            <div class="mb-4">
+                <label class="form-label text-muted small">Min Rating</label>
+                <select class="form-select bg-dark text-light border-0" [(ngModel)]="selectedRating"
+                    (change)="applyFilters()">
+                    <option [value]="0">Any</option>
+                    <option [value]="4">4+ Stars</option>
+                    <option [value]="3">3+ Stars</option>
+                    <option [value]="2">2+ Stars</option>
+                </select>
+            </div>
+
+            <button class="btn btn-outline-light w-100 mt-2" (click)="clearFilters()">Clear Filters</button>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="content">
+        <!-- Toggle Button (Visible when sidebar closed or always?) -->
+        <button class="btn btn-dark shadow-sm mb-4" (click)="toggleSidebar()">
+            <i class="bi" [class.bi-list]="!isSidebarOpen" [class.bi-arrow-left]="isSidebarOpen"></i>
+            {{isSidebarOpen ? 'Hide Filters' : 'Show Filters'}}
+        </button>
+
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h3 class="text-white">Now Showing</h3>
+            <span class="badge bg-secondary">{{filteredMovies.length}} Movies</span>
+        </div>
+
+
+        <!-- Movies Grid -->
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
+            <div class="col" *ngFor="let movie of filteredMovies">
+                <div class="card glass-card h-100 text-white border-0 position-relative overflow-hidden"
+                    [routerLink]="['/movie', movie.movieId]" style="cursor: pointer;">
+                    <!-- Backend doesn't send image, using placeholder/random or external service if available -->
+                    <!-- Ideally update backend to send image URL or mapped ID -->
+                    <img src="https://placehold.co/300x450?text={{movie.name}}" class="card-img-top" [alt]="movie.name"
+                        style="height: 380px; object-fit: cover; transition: transform 0.5s;">
+                    <div class="card-body">
+                        <h5 class="card-title text-truncate fw-bold">{{movie.name}}</h5>
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <span class="text-warning"><i class="bi bi-star-fill"></i> {{movie.rating}}</span>
+                            <span class="text-muted small">{{movie.language}}</span>
+                        </div>
+                        <p class="card-text small text-muted text-truncate">{{movie.genre}}</p>
+                    </div>
+                    <!-- Hover Overlay -->
+                    <div class="card-overlay d-flex flex-column justify-content-center align-items-center">
+                        <button class="btn btn-primary rounded-pill px-4 fw-bold shadow">Book Now</button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 text-center mt-5" *ngIf="filteredMovies.length === 0">
+                <h3 class="text-muted">No movies found matching your criteria.</h3>
+                <button class="btn btn-link text-primary-custom" (click)="clearFilters()">Clear Filters</button>
+            </div>
+        </div>
+    </div>
